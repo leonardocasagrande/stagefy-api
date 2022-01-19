@@ -43,7 +43,7 @@ export default function ensureAuthenticated(
       // check if user exists
       const user = await usersRepository.findById(sub);
 
-      if (!user || !user.isActive) {
+      if (!user) {
         throw new AppError('Token de autenticação inválido.', 401);
       }
 
@@ -64,7 +64,6 @@ export default function ensureAuthenticated(
 
       return next();
     } catch (error) {
-      console.log(error);
       throw new AppError('Token de autenticação inválido.', 401);
     }
   };

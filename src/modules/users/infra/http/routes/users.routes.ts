@@ -10,7 +10,7 @@ const userController = new UserController();
 const profileRoleValidValues = [
   ProfileRoleEnum.Responsible,
   ProfileRoleEnum.Student,
-  ProfileRoleEnum.Teacher,
+  ProfileRoleEnum.Professional,
 ];
 
 usersRouter.post(

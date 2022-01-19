@@ -63,7 +63,6 @@ export abstract class BaseRepository<Entity extends DeepPartial<Entity>>
       throw new AppError('Entidade inexistente no banco de dados.', 500);
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(error);
       throw new AppError('Erro ao atualizar entidade.', 500, error);
     }
   }
