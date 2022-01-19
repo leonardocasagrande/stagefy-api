@@ -20,8 +20,8 @@ class DateFnsDateProvider implements IDateProvider {
     return dateFns.addHours(selectedDate, hours);
   }
 
-  public isAfter({ date, compare_date }: IIsAfterDTO): boolean {
-    return dateFns.isAfter(date, compare_date);
+  public isAfter({ date, compareDate }: IIsAfterDTO): boolean {
+    return dateFns.isAfter(date, compareDate);
   }
 
   public differenceInDays({

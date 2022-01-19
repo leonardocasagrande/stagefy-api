@@ -21,8 +21,6 @@ export const errorHandler = (
     });
   }
 
-  console.log(error);
-
   if (isCelebrateError(error)) {
     const values = error.details.values();
 

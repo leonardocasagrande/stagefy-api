@@ -1,6 +1,6 @@
 export enum ProfileRoleEnum {
   Admin = 'ADMIN',
-  Teacher = 'TEACHER',
+  Professional = 'PROFESSIONAL',
   Responsible = 'RESPONSIBLE',
   Student = 'STUDENT',
 }
