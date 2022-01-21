@@ -1,3 +1,5 @@
+import { ProfileRoleEnum } from '@modules/users/dtos/enum/ProfileRoleEnum';
+import ensureAuthenticated from '@shared/infra/http/middlewares/ensureAuthenticated';
 import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
 import ProfessionalsController from '../controllers/ProfessionalsController';
@@ -21,6 +23,34 @@ professionalsRouter.post(
     },
   }),
   professionalsController.create,
+);
+
+professionalsRouter.post(
+  '/:id/accept',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().required(),
+    },
+  }),
+  ensureAuthenticated([ProfileRoleEnum.Admin]),
+  professionalsController.accept,
+);
+
+professionalsRouter.post(
+  '/:id/refuse',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().required(),
+    },
+  }),
+  ensureAuthenticated([ProfileRoleEnum.Admin]),
+  professionalsController.refuse,
+);
+
+professionalsRouter.get(
+  '/not-accepted',
+  ensureAuthenticated([ProfileRoleEnum.Admin]),
+  professionalsController.getNotAccepted,
 );
 
 export default professionalsRouter;

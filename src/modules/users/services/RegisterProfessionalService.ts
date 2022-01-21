@@ -68,15 +68,12 @@ export default class RegisterProfessionalService {
       profileRole: ProfileRoleEnum.Professional,
     });
 
-    // const user = await this.usersRepository.save(userEntity);
-
     const professionalRecord = await this.professionalsRepository.create({
       user,
       artisticName,
       bio,
       zipcode,
       birthday,
-      accepted: false,
     });
 
     const newProfessional = await this.professionalsRepository.save(

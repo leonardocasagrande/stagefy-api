@@ -17,6 +17,12 @@ class UsersRepository extends BaseRepository<User> implements IUsersRepository {
   public async findByEmail(email: string): Promise<User | undefined> {
     const user = await this.ormRepository.findOne({
       where: { email },
+      join: {
+        alias: 'user',
+        leftJoinAndSelect: {
+          professional: 'user.professional',
+        },
+      },
     });
     return user;
   }

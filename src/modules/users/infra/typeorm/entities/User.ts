@@ -1,7 +1,15 @@
+import { Professional } from './Professional';
 import { ProfileRoleEnum } from '@modules/users/dtos/enum/ProfileRoleEnum';
 import { AbstractEntity } from '@shared/entities/abstractEntity';
 import { Exclude } from 'class-transformer';
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  OneToOne,
+} from 'typeorm';
 
 @Entity()
 export class User extends AbstractEntity {
@@ -31,4 +39,7 @@ export class User extends AbstractEntity {
     default: ProfileRoleEnum.Student,
   })
   profileRole: ProfileRoleEnum;
+
+  @OneToOne(() => Professional, professional => professional.user)
+  professional: Professional;
 }

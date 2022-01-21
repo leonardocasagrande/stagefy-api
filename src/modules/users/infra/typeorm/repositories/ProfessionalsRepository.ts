@@ -16,6 +16,13 @@ class ProfessionalsRepository
 
     this.ormRepository = repo;
   }
+
+  public findAllNotAccepted(): Promise<Professional[]> {
+    const professionals = this.ormRepository.find({
+      where: { accepted: null },
+    });
+    return professionals;
+  }
 }
 
 export default ProfessionalsRepository;
