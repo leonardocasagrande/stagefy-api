@@ -9,6 +9,7 @@ import IDateProvider from '@shared/container/providers/DateProvider/models/IDate
 import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IUserTokensRepository from '../repositories/IUserTokensRepository';
+import { ProfileRoleEnum } from '../dtos/enum/ProfileRoleEnum';
 
 interface IRequest {
   email: string;
@@ -39,7 +40,7 @@ class AuthenticateUserService {
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email);
-    if (!user || !user.isActive) {
+    if (!user) {
       throw new AppError('Email/Senha inválidos.', 400);
     }
 
@@ -50,6 +51,10 @@ class AuthenticateUserService {
 
     if (!passwordMatched) {
       throw new AppError('Email/Senha inválidos.', 400);
+    }
+
+    if (user.professional && !user.professional.accepted) {
+      throw new AppError('Profissional não aceito', 400);
     }
 
     const {

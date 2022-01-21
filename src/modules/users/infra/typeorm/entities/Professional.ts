@@ -3,7 +3,11 @@ import { User } from './User';
 
 @Entity()
 export class Professional {
-  @OneToOne(() => User, { cascade: true, primary: true })
+  @OneToOne(() => User, user => user.professional, {
+    cascade: true,
+    primary: true,
+    eager: true,
+  })
   @JoinColumn({ name: 'id' })
   user: User;
 
@@ -19,6 +23,6 @@ export class Professional {
   @Column('varchar', { length: 128, nullable: false })
   birthday: string;
 
-  @Column('bool', { nullable: false })
+  @Column('bool', { nullable: true, default: null })
   accepted: boolean;
 }

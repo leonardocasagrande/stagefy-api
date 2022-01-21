@@ -38,7 +38,7 @@ sessionsRouter.delete(
   '/',
   ensureAuthenticated([
     ProfileRoleEnum.Student,
-    ProfileRoleEnum.Teacher,
+    ProfileRoleEnum.Professional,
     ProfileRoleEnum.Responsible,
     ProfileRoleEnum.Admin,
   ]),

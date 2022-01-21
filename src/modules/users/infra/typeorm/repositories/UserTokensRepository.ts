@@ -18,8 +18,8 @@ class UserTokensRepository
     this.ormRepository = repo;
   }
 
-  public async findByUser(user_id: string): Promise<UserToken[]> {
-    const user = await this.find({ where: { user_id } });
+  public async findByUser(userId: string): Promise<UserToken[]> {
+    const user = await this.find({ where: { userId } });
 
     return user;
   }

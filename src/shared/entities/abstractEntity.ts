@@ -1,4 +1,5 @@
-import { CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from "typeorm";
+import { Exclude } from 'class-transformer';
+import { CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 
 export abstract class AbstractEntity {
   @CreateDateColumn()
@@ -8,5 +9,6 @@ export abstract class AbstractEntity {
   updatedAt: Date;
 
   @DeleteDateColumn()
+  @Exclude()
   deletedAt: Date;
 }

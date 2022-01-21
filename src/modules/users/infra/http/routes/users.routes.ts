@@ -11,6 +11,7 @@ const profileRoleValidValues = [
   ProfileRoleEnum.Responsible,
   ProfileRoleEnum.Student,
   ProfileRoleEnum.Professional,
+  ProfileRoleEnum.Admin,
 ];
 
 usersRouter.post(
