@@ -53,4 +53,10 @@ professionalsRouter.get(
   professionalsController.getNotAccepted,
 );
 
+professionalsRouter.get(
+  '/accepted',
+  ensureAuthenticated([ProfileRoleEnum.Admin]),
+  professionalsController.getAccepted,
+);
+
 export default professionalsRouter;
