@@ -1,3 +1,5 @@
+import EventsRepository from '@modules/events/infra/typeorm/repositories/EventsRepository';
+import IEventsRepository from '@modules/events/repositories/IEventsRepository';
 import ProfessionalsRepository from '@modules/users/infra/typeorm/repositories/ProfessionalsRepository';
 import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
@@ -21,4 +23,9 @@ container.registerSingleton<IUserTokensRepository>(
 container.registerSingleton<IProfessionalsRepository>(
   'ProfessionalsRepository',
   ProfessionalsRepository,
+);
+
+container.registerSingleton<IEventsRepository>(
+  'EventsRepository',
+  EventsRepository,
 );

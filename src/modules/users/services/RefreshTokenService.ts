@@ -59,15 +59,6 @@ class RefreshTokenService {
       throw new AppError('Refresh token inválido', 401);
     }
 
-    const accessTokenExpired = this.dateProvider.isAfter({
-      date: new Date(),
-      compareDate: userToken.accessTokenExpirationDate,
-    });
-
-    if (!accessTokenExpired) {
-      throw new AppError('Refresh token inválido', 401);
-    }
-
     // Authenticate user
     const token = sign({ user_profile_role: user.profileRole }, secret_token, {
       subject: user.id,

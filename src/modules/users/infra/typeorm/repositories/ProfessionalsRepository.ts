@@ -23,6 +23,12 @@ class ProfessionalsRepository
     });
     return professionals;
   }
+  public findAllAccepted(): Promise<Professional[]> {
+    const professionals = this.ormRepository.find({
+      where: { accepted: true },
+    });
+    return professionals;
+  }
 }
 
 export default ProfessionalsRepository;

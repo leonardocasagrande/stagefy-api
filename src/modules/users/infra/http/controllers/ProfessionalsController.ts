@@ -5,6 +5,7 @@ import { classToClass } from 'class-transformer';
 import AcceptProfessionalService from '@modules/users/services/AcceptProfessionalService';
 import ListNotAcceptedProfessionalsService from '@modules/users/services/ListNotAcceptedProfessionalsService';
 import RefuseProfessionalService from '@modules/users/services/RefuseProfessionalService';
+import ListAcceptedProfessionalsService from '@modules/users/services/ListAcceptedProfessionalsService';
 
 export default class ProfessionalsController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -40,6 +41,19 @@ export default class ProfessionalsController {
     );
 
     const professionals = await listNotAcceptedProfessionals.execute();
+
+    return response.status(200).json(classToClass(professionals));
+  }
+
+  public async getAccepted(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const listAcceptedProfessionals = container.resolve(
+      ListAcceptedProfessionalsService,
+    );
+
+    const professionals = await listAcceptedProfessionals.execute();
 
     return response.status(200).json(classToClass(professionals));
   }

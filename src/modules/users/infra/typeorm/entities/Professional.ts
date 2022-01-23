@@ -1,4 +1,5 @@
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Event } from '@modules/events/infra/typeorm/entities/Event';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { User } from './User';
 
 @Entity()
@@ -25,4 +26,7 @@ export class Professional {
 
   @Column('bool', { nullable: true, default: null })
   accepted: boolean;
+
+  @OneToMany(() => Event, event => event.professional)
+  events: Event[];
 }
