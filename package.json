@@ -7,8 +7,7 @@
     "start": "node  -r tsconfig-paths/register build/app.js",
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "heroku-postbuild": "npm run build",
-    "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./build"
+    "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files"
   },
   "dependencies": {
     "@sentry/node": "^6.16.1",
