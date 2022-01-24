@@ -39,14 +39,14 @@ class RefreshTokenService {
     const userToken = await this.userTokensRepository.findByToken(refreshToken);
 
     if (!userToken) {
-      throw new AppError('Refresh token não encontrado', 404);
+      throw new AppError('Refresh token não encontrado', 401);
     }
 
     // Checking user
     const user = await this.usersRepository.findById(userToken.userId);
 
     if (!user) {
-      throw new AppError('Usuário não encontrado', 404);
+      throw new AppError('Usuário não encontrado', 401);
     }
 
     // checking expiration dates
