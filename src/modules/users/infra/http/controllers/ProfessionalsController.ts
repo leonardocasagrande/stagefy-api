@@ -6,6 +6,8 @@ import AcceptProfessionalService from '@modules/users/services/AcceptProfessiona
 import ListNotAcceptedProfessionalsService from '@modules/users/services/ListNotAcceptedProfessionalsService';
 import RefuseProfessionalService from '@modules/users/services/RefuseProfessionalService';
 import ListAcceptedProfessionalsService from '@modules/users/services/ListAcceptedProfessionalsService';
+import UpdateProfessionalService from '@modules/users/services/UpdateProfessionalService';
+import DeleteProfessionalService from '@modules/users/services/DeleteProfessionalService';
 
 export default class ProfessionalsController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -14,6 +16,28 @@ export default class ProfessionalsController {
     const professional = await createProfessional.execute(request.body);
 
     return response.status(201).json(classToClass(professional));
+  }
+
+  public async update(request: Request, response: Response): Promise<Response> {
+    const updateProfessional = container.resolve(UpdateProfessionalService);
+
+    const avatar = request.file;
+
+    const professional = await updateProfessional.execute({
+      ...request.body,
+      id: request.user!.id,
+      avatar,
+    });
+
+    return response.status(201).json(classToClass(professional));
+  }
+
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const deleteProfessional = container.resolve(DeleteProfessionalService);
+
+    await deleteProfessional.execute({ id: request.user!.id });
+
+    return response.status(204).json();
   }
 
   public async accept(request: Request, response: Response): Promise<Response> {
