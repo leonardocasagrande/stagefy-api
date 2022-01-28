@@ -1,9 +1,7 @@
-import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
 import IProfessionalsRepository from '@modules/users/repositories/IProfessionalsRepository';
+import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
 import AppError from '@shared/errors/appError';
 import { inject, injectable } from 'tsyringe';
-import { ProfileRoleEnum } from '../dtos/enum/ProfileRoleEnum';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 import { Professional } from './../infra/typeorm/entities/Professional';
 
