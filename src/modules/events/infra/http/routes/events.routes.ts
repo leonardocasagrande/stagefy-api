@@ -60,4 +60,15 @@ eventsRouter.get(
   eventsController.listByProfessional,
 );
 
+eventsRouter.post(
+  '/:id/start',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().required(),
+    },
+  }),
+  ensureAuthenticated([ProfileRoleEnum.Professional]),
+  eventsController.start,
+);
+
 export default eventsRouter;
