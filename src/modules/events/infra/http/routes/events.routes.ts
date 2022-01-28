@@ -54,4 +54,10 @@ eventsRouter.delete(
   eventsController.delete,
 );
 
+eventsRouter.get(
+  '/not-started',
+  ensureAuthenticated([ProfileRoleEnum.Professional]),
+  eventsController.listByProfessional,
+);
+
 export default eventsRouter;

@@ -31,4 +31,7 @@ export class Event extends AbstractEntity {
 
   @Column('integer', { nullable: false, default: 0 })
   views: number;
+
+  @Column('varchar', { nullable: true })
+  channelName: string;
 }

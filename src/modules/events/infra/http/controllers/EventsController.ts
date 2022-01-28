@@ -1,5 +1,6 @@
 import DeleteEventService from '@modules/events/services/DeleteEventService';
 import ListEventService from '@modules/events/services/ListEventService';
+import ListFutureProfessionalEventsService from '@modules/events/services/ListFutureProfessionalEventsService';
 import RegisterEventService from '@modules/events/services/RegisterEventService';
 import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
@@ -41,5 +42,18 @@ export default class EventsController {
     });
 
     return response.status(200).json(classToClass(event));
+  }
+
+  public async listByProfessional(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const listFuture = container.resolve(ListFutureProfessionalEventsService);
+
+    const id = request.user!.id;
+
+    const events = await listFuture.execute({ id });
+
+    return response.status(200).json(classToClass(events));
   }
 }

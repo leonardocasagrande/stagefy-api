@@ -4,6 +4,7 @@ import {
   FindConditions,
   getRepository,
   ILike,
+  IsNull,
   Like,
   Repository,
 } from 'typeorm';
@@ -33,6 +34,16 @@ class EventsRepository
       .orWhere('user.name ilike :term')
       .getMany();
   }
+
+  public findNotStartedByProfessionalId: (id: string) => Promise<Event[]> =
+    id => {
+      return this.ormRepository.find({
+        where: {
+          professional: id,
+          channelName: IsNull(),
+        },
+      });
+    };
 }
 
 export default EventsRepository;
