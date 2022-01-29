@@ -14,7 +14,7 @@ class DeleteEventService {
   ) {}
 
   public async execute({ eventId }: IDeleteEventRequest): Promise<void> {
-    const event = this.eventsRepository.findById(eventId);
+    const event = await this.eventsRepository.findById(eventId);
     if (!event) {
       throw new AppError('Evento não encontrado', 404);
     }

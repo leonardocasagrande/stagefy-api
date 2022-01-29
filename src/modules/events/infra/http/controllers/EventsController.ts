@@ -2,6 +2,7 @@ import DeleteEventService from '@modules/events/services/DeleteEventService';
 import ListEventService from '@modules/events/services/ListEventService';
 import ListFutureProfessionalEventsService from '@modules/events/services/ListFutureProfessionalEventsService';
 import RegisterEventService from '@modules/events/services/RegisterEventService';
+import StartEventService from '@modules/events/services/StartEventService';
 import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
@@ -27,9 +28,20 @@ export default class EventsController {
   public async delete(request: Request, response: Response): Promise<Response> {
     const deleteEvent = container.resolve(DeleteEventService);
 
-    deleteEvent.execute({ eventId: request.params.id });
+    await deleteEvent.execute({ eventId: request.params.id });
 
     return response.status(204).json();
+  }
+
+  public async start(request: Request, response: Response): Promise<Response> {
+    const startEvent = container.resolve(StartEventService);
+
+    const event = await startEvent.execute({
+      eventId: request.params.id,
+      userId: request.user!.id,
+    });
+
+    return response.status(200).json(classToClass(event));
   }
 
   public async list(request: Request, response: Response): Promise<Response> {

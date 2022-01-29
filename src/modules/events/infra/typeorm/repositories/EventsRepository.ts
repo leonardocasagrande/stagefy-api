@@ -42,6 +42,9 @@ class EventsRepository
           professional: id,
           channelName: IsNull(),
         },
+        order: {
+          date: 'ASC',
+        },
       });
     };
 }
