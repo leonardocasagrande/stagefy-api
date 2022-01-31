@@ -1,5 +1,7 @@
 import EventsRepository from '@modules/events/infra/typeorm/repositories/EventsRepository';
+import LikesRepository from '@modules/events/infra/typeorm/repositories/LikesRepository';
 import IEventsRepository from '@modules/events/repositories/IEventsRepository';
+import ILikesRepository from '@modules/events/repositories/ILikesRepository';
 import ProfessionalsRepository from '@modules/users/infra/typeorm/repositories/ProfessionalsRepository';
 import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
@@ -28,4 +30,9 @@ container.registerSingleton<IProfessionalsRepository>(
 container.registerSingleton<IEventsRepository>(
   'EventsRepository',
   EventsRepository,
+);
+
+container.registerSingleton<ILikesRepository>(
+  'LikesRepository',
+  LikesRepository,
 );

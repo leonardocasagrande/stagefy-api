@@ -4,9 +4,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Professional } from './../../../../users/infra/typeorm/entities/Professional';
+import { Like } from './Like';
 
 @Entity()
 export class Event extends AbstractEntity {
@@ -32,6 +34,18 @@ export class Event extends AbstractEntity {
   @Column('integer', { nullable: false, default: 0 })
   views: number;
 
-  @Column('varchar', { nullable: true })
-  channelName: string;
+  @Column('integer', { nullable: false, default: 0 })
+  currentViews: number;
+
+  @Column('timestamp with time zone', { nullable: true })
+  startedAt: Date;
+
+  @Column('timestamp with time zone', { nullable: true })
+  finishedAt: Date;
+
+  @Column('integer', { nullable: true, default: null })
+  streamerPeerId: number;
+
+  @OneToMany(() => Like, like => like.event)
+  likes: Like[];
 }

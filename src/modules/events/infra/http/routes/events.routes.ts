@@ -43,6 +43,58 @@ eventsRouter.get(
   eventsController.list,
 );
 
+eventsRouter.get(
+  '/ongoing',
+  celebrate({
+    [Segments.QUERY]: {
+      term: Joi.string().allow(null, ''),
+    },
+  }),
+  ensureAuthenticated([
+    ProfileRoleEnum.Admin,
+    ProfileRoleEnum.Responsible,
+    ProfileRoleEnum.Student,
+  ]),
+  eventsController.listOngoing,
+);
+
+eventsRouter.post(
+  '/:id/join',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().required(),
+    },
+  }),
+  ensureAuthenticated([ProfileRoleEnum.Responsible, ProfileRoleEnum.Student]),
+  eventsController.join,
+);
+
+eventsRouter.post(
+  '/:id/leave',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().required(),
+    },
+  }),
+  ensureAuthenticated([ProfileRoleEnum.Responsible, ProfileRoleEnum.Student]),
+  eventsController.leave,
+);
+
+eventsRouter.get(
+  '/:id/current-views',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().required(),
+    },
+  }),
+  ensureAuthenticated([
+    ProfileRoleEnum.Responsible,
+    ProfileRoleEnum.Student,
+    ProfileRoleEnum.Professional,
+  ]),
+  eventsController.currentViews,
+);
+
 eventsRouter.delete(
   '/:id',
   celebrate({
@@ -66,9 +118,34 @@ eventsRouter.post(
     [Segments.PARAMS]: {
       id: Joi.string().required(),
     },
+    [Segments.BODY]: {
+      streamerPeerId: Joi.number().required(),
+    },
   }),
   ensureAuthenticated([ProfileRoleEnum.Professional]),
   eventsController.start,
+);
+
+eventsRouter.post(
+  '/:id/preview',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().required(),
+    },
+  }),
+  ensureAuthenticated([ProfileRoleEnum.Professional]),
+  eventsController.preview,
+);
+
+eventsRouter.post(
+  '/:id/end',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().required(),
+    },
+  }),
+  ensureAuthenticated([ProfileRoleEnum.Professional]),
+  eventsController.end,
 );
 
 export default eventsRouter;

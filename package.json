@@ -12,6 +12,7 @@
   "dependencies": {
     "@sentry/node": "^6.16.1",
     "@sentry/tracing": "^6.16.1",
+    "agora-access-token": "^2.0.4",
     "argon2": "^0.28.3",
     "aws-sdk": "^2.1062.0",
     "bcryptjs": "^2.4.3",

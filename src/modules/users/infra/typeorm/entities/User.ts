@@ -9,7 +9,9 @@ import {
   PrimaryGeneratedColumn,
   JoinColumn,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
+import { Like } from '@modules/events/infra/typeorm/entities/Like';
 
 @Entity()
 export class User extends AbstractEntity {
@@ -42,4 +44,7 @@ export class User extends AbstractEntity {
 
   @OneToOne(() => Professional, professional => professional.user)
   professional: Professional;
+
+  @OneToMany(() => Like, like => like.user)
+  likes: Like[];
 }
