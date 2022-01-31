@@ -4,19 +4,13 @@ import { inject, injectable } from 'tsyringe';
 import { Event } from '../infra/typeorm/entities/Event';
 import IEventsRepository from '../repositories/IEventsRepository';
 
-interface IStartEventRequest {
+interface IPreviewEventRequest {
   eventId: string;
   userId: string;
-  streamerPeerId: number;
-}
-
-interface IStartEventResponse {
-  event: Event;
-  token: string;
 }
 
 @injectable()
-class StartEventService {
+class PreviewEventService {
   constructor(
     @inject('EventsRepository')
     private eventsRepository: IEventsRepository,
@@ -27,8 +21,7 @@ class StartEventService {
   public async execute({
     eventId,
     userId,
-    streamerPeerId,
-  }: IStartEventRequest): Promise<IStartEventResponse> {
+  }: IPreviewEventRequest): Promise<string> {
     const event = await this.eventsRepository.findById(eventId);
     if (!event) {
       throw new AppError('Evento não encontrado', 404);
@@ -40,14 +33,8 @@ class StartEventService {
       throw new AppError('Evento já iniciado', 400);
     }
     const token = this.videoTokenProvider.generateToken(eventId, userId);
-
-    const newEvent = await this.eventsRepository.update({
-      ...event,
-      startedAt: new Date(),
-      streamerPeerId,
-    });
-    return { event: newEvent, token };
+    return token;
   }
 }
 
-export default StartEventService;
+export default PreviewEventService;

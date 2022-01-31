@@ -1,6 +1,7 @@
 import IEventsRepository from '@modules/events/repositories/IEventsRepository';
 import { BaseRepository } from '@shared/repositories/baseRepository';
 import {
+  Brackets,
   FindConditions,
   getRepository,
   ILike,
@@ -35,12 +36,29 @@ class EventsRepository
       .getMany();
   }
 
+  public async findOngoingWithTerm(term: string = ''): Promise<Event[]> {
+    return this.ormRepository
+      .createQueryBuilder('event')
+      .leftJoinAndSelect('event.professional', 'professional')
+      .leftJoinAndSelect('professional.user', 'user')
+      .where('event.finishedAt IS NULL')
+      .andWhere('event.startedAt IS NOT NULL')
+      .andWhere(
+        new Brackets(qb => {
+          qb.where('event.name ilike :term', { term: `%${term}%` })
+            .orWhere('professional.artisticName ilike :term')
+            .orWhere('user.name ilike :term');
+        }),
+      )
+      .getMany();
+  }
+
   public findNotStartedByProfessionalId: (id: string) => Promise<Event[]> =
     id => {
       return this.ormRepository.find({
         where: {
           professional: id,
-          channelName: IsNull(),
+          startedAt: IsNull(),
         },
         order: {
           date: 'ASC',
