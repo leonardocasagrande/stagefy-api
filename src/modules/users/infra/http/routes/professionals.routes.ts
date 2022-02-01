@@ -83,6 +83,11 @@ professionalsRouter.get(
 
 professionalsRouter.get(
   '/accepted',
+  celebrate({
+    [Segments.QUERY]: {
+      term: Joi.string().allow(null, ''),
+    },
+  }),
   ensureAuthenticated([ProfileRoleEnum.Admin]),
   professionalsController.getAccepted,
 );

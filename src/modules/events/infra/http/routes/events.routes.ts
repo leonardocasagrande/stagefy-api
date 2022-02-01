@@ -37,6 +37,7 @@ eventsRouter.get(
   celebrate({
     [Segments.QUERY]: {
       term: Joi.string().allow(null, ''),
+      userId: Joi.string().allow(null, ''),
     },
   }),
   ensureAuthenticated([ProfileRoleEnum.Admin]),

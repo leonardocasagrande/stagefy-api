@@ -114,10 +114,11 @@ export default class EventsController {
   public async list(request: Request, response: Response): Promise<Response> {
     const listEvent = container.resolve(ListEventService);
 
-    const { term } = request.query;
+    const { term, userId } = request.query;
 
     const event = await listEvent.execute({
       term: term ? term.toString() : undefined,
+      userId: userId ? userId.toString() : undefined,
     });
 
     return response.status(200).json(classToClass(event));
