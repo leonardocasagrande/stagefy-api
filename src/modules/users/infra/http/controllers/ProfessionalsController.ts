@@ -77,7 +77,11 @@ export default class ProfessionalsController {
       ListAcceptedProfessionalsService,
     );
 
-    const professionals = await listAcceptedProfessionals.execute();
+    const { term } = request.query;
+
+    const professionals = await listAcceptedProfessionals.execute({
+      term: term ? term.toString() : undefined,
+    });
 
     return response.status(200).json(classToClass(professionals));
   }

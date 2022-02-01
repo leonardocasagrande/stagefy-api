@@ -5,4 +5,5 @@ export default interface IProfessionalsRepository
   extends IBaseRepository<Professional> {
   findAllNotAccepted(): Promise<Professional[]>;
   findAllAccepted(): Promise<Professional[]>;
+  findAcceptedWithTerm: (term?: string) => Promise<Professional[]>;
 }

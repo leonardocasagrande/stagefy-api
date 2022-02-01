@@ -1,4 +1,6 @@
-import IEventsRepository from '@modules/events/repositories/IEventsRepository';
+import IEventsRepository, {
+  IFindWithTermAndProfessionalIdProps,
+} from '@modules/events/repositories/IEventsRepository';
 import { BaseRepository } from '@shared/repositories/baseRepository';
 import {
   Brackets,
@@ -25,16 +27,30 @@ class EventsRepository
     this.ormRepository = repo;
   }
 
-  public async findWithTerm(term: string = ''): Promise<Event[]> {
-    return this.ormRepository
+  public findWithTermAndProfessionalId: ({
+    term,
+    professionalId,
+  }: IFindWithTermAndProfessionalIdProps) => Promise<Event[]> = ({
+    term = '',
+    professionalId,
+  }) => {
+    const query = this.ormRepository
       .createQueryBuilder('event')
       .leftJoinAndSelect('event.professional', 'professional')
       .leftJoinAndSelect('professional.user', 'user')
-      .where('event.name ilike :term', { term: `%${term}%` })
-      .orWhere('professional.artisticName ilike :term')
-      .orWhere('user.name ilike :term')
-      .getMany();
-  }
+      .where(
+        new Brackets(qb => {
+          qb.where('event.name ilike :term', { term: `%${term}%` })
+            .orWhere('professional.artisticName ilike :term')
+            .orWhere('user.name ilike :term');
+        }),
+      );
+    if (professionalId) {
+      query.andWhere('user.id = :id', { id: professionalId });
+    }
+
+    return query.getMany();
+  };
 
   public async findOngoingWithTerm(term: string = ''): Promise<Event[]> {
     return this.ormRepository
