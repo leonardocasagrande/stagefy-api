@@ -13,4 +13,5 @@ export default interface IEventsRepository extends IBaseRepository<Event> {
   }: IFindWithTermAndProfessionalIdProps) => Promise<Event[]>;
   findOngoingWithTerm: (term?: string) => Promise<Event[]>;
   findNotStartedByProfessionalId: (id: string) => Promise<Event[]>;
+  findFinishedByProfessionalId: (id: string) => Promise<Event[]>;
 }
