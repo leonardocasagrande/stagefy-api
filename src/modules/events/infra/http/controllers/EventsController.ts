@@ -4,6 +4,7 @@ import EventCurrentViewsService from '@modules/events/services/EventCurrentViews
 import JoinEventService from '@modules/events/services/JoinEventService';
 import LeaveEventService from '@modules/events/services/LeaveEventService';
 import ListEventService from '@modules/events/services/ListEventService';
+import ListFinishedProfessionalEventsService from '@modules/events/services/ListFinishedProfessionalEventsService';
 import ListFutureProfessionalEventsService from '@modules/events/services/ListFutureProfessionalEventsService';
 import ListOngoingEventService from '@modules/events/services/ListOngoingEventService';
 import PreviewEventService from '@modules/events/services/PreviewEventService';
@@ -148,6 +149,21 @@ export default class EventsController {
     const id = request.user!.id;
 
     const events = await listFuture.execute({ id });
+
+    return response.status(200).json(classToClass(events));
+  }
+
+  public async listFinished(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const listFinished = container.resolve(
+      ListFinishedProfessionalEventsService,
+    );
+
+    const id = request.user!.id;
+
+    const events = await listFinished.execute({ id });
 
     return response.status(200).json(classToClass(events));
   }

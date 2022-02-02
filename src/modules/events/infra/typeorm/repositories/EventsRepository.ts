@@ -9,6 +9,7 @@ import {
   ILike,
   IsNull,
   Like,
+  Not,
   Repository,
 } from 'typeorm';
 import { Event } from '../entities/Event';
@@ -78,6 +79,18 @@ class EventsRepository
         },
         order: {
           date: 'ASC',
+        },
+      });
+    };
+  public findFinishedByProfessionalId: (id: string) => Promise<Event[]> =
+    id => {
+      return this.ormRepository.find({
+        where: {
+          professional: id,
+          finishedAt: Not(IsNull()),
+        },
+        order: {
+          finishedAt: 'DESC',
         },
       });
     };

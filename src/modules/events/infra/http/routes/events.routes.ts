@@ -113,6 +113,12 @@ eventsRouter.get(
   eventsController.listByProfessional,
 );
 
+eventsRouter.get(
+  '/finished',
+  ensureAuthenticated([ProfileRoleEnum.Professional]),
+  eventsController.listFinished,
+);
+
 eventsRouter.post(
   '/:id/start',
   celebrate({
