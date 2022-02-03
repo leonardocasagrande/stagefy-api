@@ -11,7 +11,7 @@ export default {
 
   defaults: {
     from: {
-      email: process.env.MAIL_ADRESS,
+      email: process.env.MAIL_ADDRESS,
       name: process.env.NAME,
     },
   },
