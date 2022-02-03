@@ -31,7 +31,6 @@ class GenerateForgotPasswordTokenService {
       const digit = Math.floor(
         Math.random() * (9999 - 1000 + 1) + 1000,
       ).toString();
-      console.log(user);
       const hashedDigit = await this.hashProvider.generateHash(digit);
       await this.passwordResetTokenRepository.deleteAllByUserId(user.id);
       const entity = await this.passwordResetTokenRepository.create({
