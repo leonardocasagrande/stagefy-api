@@ -85,4 +85,4 @@ jobs:
             cd ~/app/${REPO_NAME}
             sudo yarn
             bash create-env-file.sh test
-            sudo pm2 restart ${REPO_NAME} --time || sudo pm2 start ./dist/shared/main/server.js --name ${REPO_NAME} --time --node-args="-r dotenv/config"
+            sudo pm2 restart ${REPO_NAME} --time || sudo pm2 start ./dist/shared/infra/http/server.js --name ${REPO_NAME} --time --node-args="-r dotenv/config"
