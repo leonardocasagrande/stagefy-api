@@ -1,11 +1,8 @@
-import AppError from '@shared/errors/appError';
-import argon2 from 'argon2';
-import { randomBytes } from 'crypto';
+import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
+import path from 'path';
 import { container, inject, injectable } from 'tsyringe';
 import { ProfileRoleEnum } from '../dtos/enum/ProfileRoleEnum';
 import { User } from '../infra/typeorm/entities/User';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
-import IUsersRepository from '../repositories/IUsersRepository';
 import RegisterUserService from './RegisterUserService';
 
 interface IRegisterResponsibleRequest {
@@ -18,7 +15,10 @@ interface IRegisterResponsibleRequest {
 
 @injectable()
 export default class RegisterResponsibleService {
-  constructor() {}
+  constructor(
+    @inject('MailProvider')
+    private mailProvider: IMailProvider,
+  ) {}
 
   public async execute({
     name,
@@ -31,6 +31,26 @@ export default class RegisterResponsibleService {
       email,
       password,
       profileRole: ProfileRoleEnum.Responsible,
+    });
+    const responsibleWelcome = path.resolve(
+      __dirname,
+      '..',
+      'views',
+      'responsible-welcome.hbs',
+    );
+
+    await this.mailProvider.sendMail({
+      subject: 'BEM VINDO À STAGEFY!',
+      to: {
+        email: user.email,
+        name: user.name,
+      },
+      templateData: {
+        file: responsibleWelcome,
+        variables: {
+          name: user.name,
+        },
+      },
     });
     return user;
   }
