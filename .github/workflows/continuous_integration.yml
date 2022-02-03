@@ -1,0 +1,113 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ develop ]
+
+  pull_request:
+    branches: [ develop ]
+
+  workflow_dispatch:
+    branches: [ develop ]
+
+jobs:
+  # commit-lint:
+
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #   - name: Project checkout
+  #     uses: actions/checkout@v2
+  #     with:
+  #       fetch-depth: 0
+  #   - uses: wagoid/commitlint-github-action@v2.1.6
+
+  # lint:
+  #   needs: [commit-lint]
+
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #   - name: Project checkout
+  #     uses: actions/checkout@v2
+  #   - name: Node.js Setup
+  #     uses: actions/setup-node@v2
+  #   - name: Installation of Node.js dependencies
+  #     run: yarn
+  #   - name: Lint
+  #     run: yarn lint
+
+  # sonar:
+  #   needs: [commit-lint, lint]
+
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Analyze with SonarCloud
+  #     uses: sonarsource/sonarcloud-github-action@master
+  #     env:
+  #       SONAR_TOKEN: '6c0269b41d92cb55ef5ed117f36b682b2289589e'
+  #     with:
+  #       args: >
+  #         -Dsonar.projectKey=regallo-api
+  #         -Dsonar.sources=.
+  #         -Dsonar.host.url=http://52.60.56.93/
+  #         -Dsonar.verbose=true
+  #         -Dsonar.login=21264dba8b34366df17fca1ecde9d47347a6ba34
+  #         -Dsonar.scm.disabled=true
+  #         -Dsonar.qualitygate.wait=true
+  #         -Dsonar.exclusions=src/shared/infra/typeorm/migrations/**,tests/**
+
+  # tests:
+  #   needs: [commit-lint, lint]
+
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #   - name: Project checkout
+  #     uses: actions/checkout@v2
+  #   - name: Node.js Setup
+  #     uses: actions/setup-node@v2
+  #     env:
+  #       NODE_OPTIONS: '--max_old_space_size=8192'
+  #   - name: Installation of Node.js dependencies
+  #     run: yarn
+  #   - name: Unit and Integration tests
+  #     run: |
+  #       cp .env.example .env
+  #       make databases
+  #       yarn test
+
+  # migrations:
+  #   needs: [commit-lint, lint]
+
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #   - name: Project checkout
+  #     uses: actions/checkout@v2
+  #   - name: Node.js Setup
+  #     uses: actions/setup-node@v2
+  #   - name: Installation of Node.js dependencies
+  #     run: yarn
+  #   - name: Migrations
+  #     run: |
+  #       cp .env.example .env
+  #       make databases
+  #       yarn typeorm schema:sync
+  #       yarn typeorm migration:run
+
+  build:
+    # needs: [commit-lint, lint, migrations]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Project checkout
+      uses: actions/checkout@v2
+    - name: Node.js Setup
+      uses: actions/setup-node@v2
+    - name: Installation of Node.js dependencies
+      run: yarn
+    - name: Build
+      run: yarn build
