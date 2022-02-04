@@ -10,8 +10,6 @@ export const errorHandler = (
   response: Response,
   __: NextFunction,
 ): Response => {
-  const inProdEnvironment = process.env.NODE_ENV === 'PROD';
-
   if (error instanceof AppError) {
     return response.status(error.statusCode).json({
       status: 'error',

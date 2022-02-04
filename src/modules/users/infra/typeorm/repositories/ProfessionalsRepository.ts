@@ -1,6 +1,6 @@
 import IProfessionalsRepository from '@modules/users/repositories/IProfessionalsRepository';
 import { BaseRepository } from '@shared/repositories/baseRepository';
-import { getRepository, Repository } from 'typeorm';
+import { Brackets, getRepository, Not, Repository } from 'typeorm';
 import { Professional } from './../entities/Professional';
 
 class ProfessionalsRepository
@@ -24,10 +24,25 @@ class ProfessionalsRepository
     return professionals;
   }
   public findAllAccepted(): Promise<Professional[]> {
-    const professionals = this.ormRepository.find({
-      where: { accepted: true },
-    });
-    return professionals;
+    return this.ormRepository
+      .createQueryBuilder('professional')
+      .innerJoinAndSelect('professional.user', 'user')
+      .where('professional.accepted = true')
+      .getMany();
+  }
+  public async findAcceptedWithTerm(term: string | undefined = '') {
+    return this.ormRepository
+      .createQueryBuilder('professional')
+      .leftJoinAndSelect('professional.user', 'user')
+      .where('professional.accepted = true')
+      .andWhere(
+        new Brackets(qb => {
+          qb.where('professional.artisticName ilike :term', {
+            term: `%${term}%`,
+          }).orWhere('user.name ilike :term');
+        }),
+      )
+      .getMany();
   }
 }
 

@@ -12,7 +12,7 @@ interface IRegisterUserRequest {
   name: string;
   email: string;
   password: string;
-  phone: string;
+  phone?: string;
 }
 
 @injectable()
@@ -37,14 +37,15 @@ export default class RegisterUserService {
     if (userWithSameMail) {
       throw new AppError('Este email já foi utilizado', 403);
     }
+    if (phone) {
+      const userWithSamePhone = await this.usersRepository.findByPhone(phone);
 
-    const userWithSamePhone = await this.usersRepository.findByPhone(phone);
-
-    if (userWithSamePhone) {
-      throw new AppError(
-        'Este número de telefone já está sendo utilizado',
-        403,
-      );
+      if (userWithSamePhone) {
+        throw new AppError(
+          'Este número de telefone já está sendo utilizado',
+          403,
+        );
+      }
     }
 
     const hashedPassword = await this.hashProvider.generateHash(password);
